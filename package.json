@@ -1,0 +1,25 @@
+{
+  "name": "nodejs-weather",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yayaoo3/nodejs-weather.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yayaoo3/nodejs-weather/issues"
+  },
+  "homepage": "https://github.com/yayaoo3/nodejs-weather#readme"
+}
