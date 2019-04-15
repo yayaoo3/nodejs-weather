@@ -14,9 +14,10 @@
 'use strict';
 
 const { Datastore } = require('@google-cloud/datastore');
-
+const Weatherapi = require('./weatherapi');
 // [START config]
 const ds = new Datastore();
+
 const query = ds.createQuery('Weather')
   .filter('title', '=', '124');
 
@@ -31,22 +32,55 @@ ds.runQuery(query).then(results => {
   tasks.forEach(task => console.log(task));
 });
 
-async function addentity() {
-  // Prepares the new entity
+var async = require('async');
+// waterfall 會按照順序執行 function
+// 而且可以傳參數
+
+function runCreate() {
+  console.log('===========use EachSeries Start===========');
+  async.waterfall(
+    [
+      function (callback) {
+        Weatherapi.get(function (err, dataA) {
+          console.log('get Weather API data');
+          callback(err, dataA);     //如果发生err， 则瀑布就完了，后续流程都不会执行，B和C都不会执行
+        });
+      },
+      function (arg1, callback) {
+        //Put data into google datastore
+        addentity(arg1).catch(console.error);
+        callback(null, arg1);
+      },
+    ],
+    function (err, arg1) {
+      if (err) {
+        console.log('runCreate 處理錯誤!');
+      }
+      else {
+        console.log('runCreate 處理成功！');
+      }
+    }
+  );
+}
+runCreate();
+
+async function addentity(content) {
+
   const taskKey = ds.key([kind]);
   const weather = {
     key: taskKey,
     data: {
-      description: 'hot',
+      content: content,
     },
   };
 
-   // Saves the entity
-   await ds.save(weather);
-   console.log(`Saved ${weather.key.id}: ${weather.data.description}`);
+  // Saves the entity
+  await ds.save(weather);
+  console.log(`Saved ${weather.key.id}: ${weather.data}`);
 }
 
-addentity().catch(console.error);
+//addentity().catch(console.error);
+
 // model.create(mdata, (err, msavedData) => {
 //   if (err) {
 //     next(err);
