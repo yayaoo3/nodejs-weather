@@ -12,6 +12,7 @@ Deploy example web service which restful api provides weather
 
 ## Run and test
 
->node app.js
+>npm install
+node app.js
 click button on 127.0.0.1:8080/ 
 or 127.0.0.1:8080/Weather
