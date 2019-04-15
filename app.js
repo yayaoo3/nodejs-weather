@@ -1,29 +1,28 @@
 var express = require('express');
 var app = express();
  
-app.use('/public', express.static('public'));
+// Weather
+app.use('/weather', require('./weather/crud'));
+
+
+//app.use('/public', express.static('public'));
  
 app.get('/index.html', function (req, res) {
 	   res.sendFile( __dirname + "/" + "index.html" );
 })
- 
-app.get('/process_get', function (req, res) {
-	 
-	  
-	   var response = {
-		          "first_name":req.query.first_name,
-		          "last_name":req.query.last_name
-		      };
-	   console.log(response);
-	   res.end(JSON.stringify(response));
+app.get('/', function (req, res) {
+	res.sendFile( __dirname + "/" + "index.html" );
 })
  
-var server = app.listen(3000, function () {
+var server = app.listen(8080,'localhost', function () {
 	 
-	  var host = server.address().address
-	  var port = server.address().port
-	 
-	  console.log("应用实例，访问地址为 http://%s:%s", host, port)
+	  var host = server.address().address;
+	  var port = server.address().port;
+	  console.log(server.address());
+	  console.log("訪問地址為 http://%s:%s", host, port)
 	 
 })
+
+
+
 
